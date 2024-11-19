@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const response = await fetch("http://localhost:3001/data");
         const data = await response.json();
         let filteredData = [...data]; // Keep original data separate
+        // console.log(data)
         const leaderboardBody = document.getElementById('leaderboard-body');
         const sectionFilter = document.getElementById('section-filter');
 
@@ -52,6 +53,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             leaderboardBody.innerHTML = '';
             sortedData.forEach((student, index) => {
                 const row = document.createElement('tr');
+                row.id = `${student.roll}`;
                 row.classList.add('border-b', 'border-gray-700');
                 row.innerHTML = `
                     <td class="p-4">${index + 1}</td>
@@ -67,9 +69,120 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <td class="p-4 text-yellow-400">${student.mediumSolved || 'N/A'}</td>
                     <td class="p-4 text-red-400">${student.hardSolved || 'N/A'}</td>
                 `;
+                row.addEventListener('click', () => {
+                    renderAgain(sortedData, student.roll);
+                })
                 leaderboardBody.appendChild(row);
             });
         };
+        let pinned = []
+        const renderAgain = (sortedData, roll) => {
+            leaderboardBody.innerHTML = '';
+            let index = 1;
+            sortedData.forEach((student) => {
+                // if(pinned.includes(roll)) {
+                //     const row = document.getElementById(roll);
+                //     row.classList.remove('pinned');
+                // }
+                if(student.roll == roll || pinned.includes(student.roll)) {
+                    pinned.push(roll);
+                    console.log(pinned);
+                    const row = createElement(student, index++);
+                    row.classList.add('pinned');
+                    leaderboardBody.appendChild(row);
+                }
+            })
+            sortedData.forEach((student) => {
+                if(!pinned.includes(student.roll)) {
+                    const row = createElement(student, index++);
+                    // row.classList.add('pinned');
+                    leaderboardBody.appendChild(row);
+                    row.addEventListener('click', () => {
+                        renderAgain(sortedData, student.roll);
+                    })
+                }
+            })
+        }
+
+        const createElement = (student, index) => {
+            const row = document.createElement('tr');
+            row.id = `${student.roll}`;
+            row.classList.add('border-b', 'border-gray-700');
+            row.innerHTML = `
+                <td class="p-4">${index}</td>
+                <td class="p-4">${student.roll}</td>
+                <td class="p-4">
+                    ${student.url.startsWith('https://leetcode.com/u/') 
+                        ? `<a href="${student.url}" target="_blank" class="text-blue-400">${student.name}</a>`
+                        : `<div class="text-red-500">${student.name}</div>`}
+                </td>
+                <td class="p-4">${student.section || 'N/A'}</td>
+                <td class="p-4">${student.totalSolved || 'N/A'}</td>
+                <td class="p-4 text-green-400">${student.easySolved || 'N/A'}</td>
+                <td class="p-4 text-yellow-400">${student.mediumSolved || 'N/A'}</td>
+                <td class="p-4 text-red-400">${student.hardSolved || 'N/A'}</td>
+            `;
+            return row;
+
+        }
+
+        const compare = document.getElementById('compare');
+        const dialog = document.getElementById('modal');
+        const close = document.getElementById('closeModal');
+        const compareModal = document.getElementById('compareModal');
+        const table = document.getElementById('compareTable')
+        const form = document.getElementById('form')
+
+        compare.addEventListener('click', () => {
+            dialog.showModal();
+        })
+
+        close.addEventListener('click', () => {
+            form.style = 'display: block';
+            table.style = 'display: none';
+            dialog.close();
+        })
+
+        compareModal.addEventListener('click', (e) => {
+            e.preventDefault();
+            const roll1 = document.getElementById('roll1').value;
+            const roll2 = document.getElementById('roll2').value;
+            let d1 = {}
+            let d2 = {}
+            let flag = 0
+            data.forEach((student) => {
+                if(student.roll == roll1 || student.name == roll1.toUpperCase()) {
+                    d1 = student;
+                    flag++;
+                }
+                if(student.roll == roll2 || student.name == roll2.toUpperCase()) {
+                    d2 = student;
+                    flag++;
+                }
+            })
+            if(flag != 2) {
+                alert("Invalid Data. Please try again.")
+                return;
+            }
+            console.log(d1, d2);
+            document.getElementById('name1').innerText = d1.name;
+            document.getElementById('total1').innerText = d1.totalSolved;
+            document.getElementById('easy1').innerText = d1.easySolved;
+            document.getElementById('medium1').innerText = d1.mediumSolved;
+            document.getElementById('hard1').innerText = d1.hardSolved;
+
+            document.getElementById('name2').innerText = d2.name;
+            document.getElementById('total2').innerText = d2.totalSolved;
+            document.getElementById('easy2').innerText = d2.easySolved;
+            document.getElementById('medium2').innerText = d2.mediumSolved;
+            document.getElementById('hard2').innerText = d2.hardSolved;
+
+           
+            form.style = 'display: none';
+            table.style = 'display: flex';
+
+        })
+
 
         // Filter function
         const filterData = (section) => {

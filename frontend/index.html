@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
     <title>LeetCode Leaderboard</title>
 </head>
 <body class="bg-gray-900 text-white p-5">
@@ -15,6 +16,9 @@
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-4xl font-bold">TBPPP Leaderboard</h1>
                     <div class="flex gap-4 items-center">
+                        <button id="compare" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center transition duration-150 ease-in-out">
+                            COMPARE IDs
+                        </button>
                         <select id="section-filter" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="all">All Sections</option>
                             <!-- Options will be dynamically added -->
@@ -84,6 +88,47 @@
             </div>
         </div>
     </div>
+    <dialog id="modal" style="width: 400px;">
+        <!-- <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsa iure, atque officiis, voluptatibus dolorum nam ab cupiditate quis, nobis error amet unde deserunt molestiae harum. Laudantium consequatur quidem molestias sapiente.</p>
+         -->
+
+    <form class="max-w-sm mx-auto" id="form">
+        <div class="mb-5">
+          <label for="roll1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Roll No. / Name</label>
+          <input type="roll1" id="roll1" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"required />
+        </div>
+        <div class="mb-5">
+          <label for="roll2" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Second Roll No. / Name</label>
+          <input type="roll2" id="roll2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"required />
+        </div>
+        <button type="submit" id="compareModal" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Start Comparison</button>
+      </form>
+        <table id="compareTable" border="1">
+            <tr>
+                <td>Name</td>
+                <td>Total</td>
+                <td>Easy</td>
+                <td>Medium</td>
+                <td>Hard</td>
+            </tr>
+            <tr>
+                <td id="name1"></td>
+                <td id="total1"></td>
+                <td id="easy1"></td>
+                <td id="medium1"></td>
+                <td id="hard1"></td>
+            </tr>
+            <tr>
+                <td id="name2"></td>
+                <td id="total2"></td>
+                <td id="easy2"></td>
+                <td id="medium2"></td>
+                <td id="hard2"></td>
+            </tr>
+        </table>
+        <br>
+        <button id="closeModal" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center transition duration-150 ease-in-out">Close</button>
+    </dialog>
     <script src="index.js"></script>
 </body>
 </html>

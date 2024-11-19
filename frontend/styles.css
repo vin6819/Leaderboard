@@ -15,3 +15,17 @@ tr {
 tr:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
+
+.pinned {
+    background-color: rgb(79, 9, 126);
+}
+
+#compareTable {
+    display: none;
+    /* border: 2px solid black; */
+}
+
+td {
+    padding: 5px;
+    border: 1px solid black;
+}
